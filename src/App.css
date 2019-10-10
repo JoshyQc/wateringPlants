@@ -20,3 +20,81 @@
 .App-link {
   color: #09d3ac;
 }
+
+a{
+  color: #003E9C;
+}
+
+body{
+  background-color: rgb(216, 247, 191);
+}
+
+button{
+  margin-right: 1em;
+}
+
+.footer{
+  margin-left: 2.5%;
+  align-items: flex-end;
+}
+
+.indexContainer{
+  justify-content: center;
+  align-items: center;
+}
+
+
+.loginform {
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+  
+}
+
+label{
+  color: #434655;
+}
+
+.principalPage{
+  margin-bottom: 35%;
+}
+
+table:first-child{
+  background-color: white;
+}
+
+.tableUser{
+  margin-top: 4em;
+}
+
+.titleUserLbl{
+  font-size: 2em;
+  margin-top: 2em;
+  display: flex;
+  align-Items: center; 
+  justify-content: center;
+}
+
+
+.userLogo{
+  width: 7em;
+  height: 7em;
+  margin: 0;
+}
+ .center-title{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+ }
+
+ .table-location{
+   width: 80%;
+   background-color: white;
+   text-align: center;
+   margin: 0 auto;
+   margin-top: 5%;
+ }
+
+ 
