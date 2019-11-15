@@ -1,8 +1,10 @@
 import React from 'react';
-import Modal from 'react-modal-view';
+import ReactDOM from 'react-dom';
+import Pagination from 'react-js-pagination';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import Config from '../../util/config';
+// require("bootstrap/less/bootstrap.less");
 
 
 class Location extends React.Component {
@@ -15,9 +17,15 @@ class Location extends React.Component {
             dataLocation: {
                 locationName: '',
                 locationPressure: '',
-                polygon: []
+                polygon: [],
+                activePage: 2
             },
         }
+    }
+
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({ activePage: pageNumber });
     }
 
     addLocation = (event) => {
@@ -71,7 +79,7 @@ class Location extends React.Component {
             dataLocation.polygon = [...dataLocation.polygon, [latlng.lat, latlng.lng]];
             //dataLocation.polygon.push([latlng.lat, latlng.lng]); 
             if (dataLocation.polygon.length > 0) {
-                var polygon = L.polyline(dataLocation.polygon, { color: 'red', fill: true }).addTo(this._map);
+                var polygon = L.polyline(dataLocation.polygon, { color: '#00C9A7', fill: true }).addTo(this._map);
                 this._map.fitBounds(polygon.getBounds());
 
                 // const Icon = L.Icon.extend({
@@ -102,45 +110,52 @@ class Location extends React.Component {
         }
     }
 
-    onModalClose = () => {
-
+    goSingleLocation = (item) => {
+        this.props.history.push({
+            pathname:'/home/location/'+ item.id
+        });
     }
 
     render() {
-        const handleClose = () => this.setState({ showModal: false });
-        const handleShow = () => this.setState({ showModal: true });
         const { locationName, locationPressure } = this.state.dataLocation;
 
         const { data } = this.state;
         return (
             <div>
-                <div className="container md-6">
+                <div className="row">
+                    <div className="col-12">
+                    <p className="location-title">LISTADO DE LOCALIDADES
                     <button onClick={() => {
-                        setTimeout(() => {
-                            this.loadMap();
-                        }, 500);
-                    }} type="button" className="btn btn-lg btn-block btn-success" data-toggle="modal" data-target="#exampleModal">Add New Location</button>
+                            setTimeout(() => {
+                                this.loadMap();
+                            }, 500);
+                        }} type="button" className="btn btn-add" data-toggle="modal" data-target="#exampleModal"><i id="add-location1" className="material-icons">note_add</i></button>
+                    </p>
+                    </div>
+                    <div className="col-12">
+                        <table className="table table-hover table-sm table-bordered table-location">
+                            <thead className="bg-success">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Water Pressure</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map((item, index) => (
+                                    <tr key={'location_' + index}>
+                                        <th scope="row">{item.id}</th>
+                                        <td>{item.name}</td>
+                                        <td>{item.water_pressure}</td>
+                                        <td><button type="button" onClick={this.goSingleLocation.bind(this, item)} className="btn btn-outline-warning"><i className="material-icons">remove_red_eye</i></button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <table className="table table-hover table-bordered table-location">
-                    <thead className="bg-success">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Water Pressure</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((item, index) => (
-                            <tr key={'location_' + index}>
-                                <th scope="row">{item.id}</th>
-                                <td>{item.name}</td>
-                                <td>{item.water_pressure}</td>
-                                <td><button type="button" className="btn btn-outline-warning">Ver</button></td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+
                 <form ref={formADD => this._formADD = formADD} onSubmit={this.addLocation}>
                     <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog" role="document">

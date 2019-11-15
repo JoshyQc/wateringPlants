@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Config from '../util/config';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import flowerUser from '../images/flower.png';
 
-class Login extends Component{
+class Login extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             data: [],
-            dataUser:{
+            dataUser: {
                 userName: '',
                 password: ''
             }
@@ -28,41 +28,47 @@ class Login extends Component{
             body: body,
         }).then(response => response.json()).then(response => {
             console.log(response);
-            if (response) {
+            debugger;;
+            if (response.success) {
                 this.props.history.push({
-                    pathname: '/Home',
+                    pathname: '/Home/Location',
                 });
             }
             else {
-                alert.show("No se pudo :c")
+                alert(response.message)
             }
         });
     }
 
-    onChangeInput = (event)=>{
+    onChangeInput = (event) => {
         let { dataUser } = this.state;
         dataUser[event.target.name] = event.target.value;
         dataUser[event.target.name] = event.target.value;
-        this.setState({dataUser})
+        this.setState({ dataUser })
     }
 
-    render(){
-        const{ userName, password } = this.state.dataUser;
+    render() {
+        const { userName, password } = this.state.dataUser;
 
-        return(
-            <div className="container col-lg-3 loginform">
-                <form className="form-signin" onSubmit={this.auth}>
-                    <div className="center-title">
-                        <img className="userLogo"src={flowerUser} alt="user" />
-                        <strong><h1 className="h3 mb-3 font-weight-normal">Enter Your Credentials</h1></strong>
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-md-5 login-right">
                     </div>
-                    <label className="sr-only">Email address</label>
-                    <input name="userName" type="text" className="form-control" value={userName} onChange={this.onChangeInput} placeholder="Username"  required autoFocus />
-                    <label className="sr-only">Password</label>
-                    <input name="password" type="password" className="form-control pass" value={password} onChange={this.onChangeInput} placeholder="Password"  required />
-                    &nbsp;
-                    <button className="btn btn-lg btn-success btn-block" type="submit">Sign In</button>
-                </form>
+                    <div className="col-md-7 login-half">
+                        <h1><p className="title-plants">WATERING PLANTS</p></h1>
+                        <h3>Control of your plants</h3>
+                        &nbsp;
+                        <form className="form-signin" onSubmit={this.auth}>
+                            <label className="sr-only">Email address</label>
+                            <input name="userName" type="text" className="form-control" value={userName} onChange={this.onChangeInput} placeholder="Username" required autoFocus />
+                            <label className="sr-only">Password</label>
+                            <input name="password" type="password" className="form-control pass" value={password} onChange={this.onChangeInput} placeholder="Password" required />
+                            &nbsp;
+                        <button className="btn btn-login" type="submit">Sign In</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         );
     }
